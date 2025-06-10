@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import PuzzleActivity from "./PuzzleActivity";
 import CodeEditor from "./CodeEditor";
+import WebDesignActivity from "./WebDesignActivity";
+import UIDesignActivity from "./UIDesignActivity";
+import RobotControlActivity from "./RobotControlActivity";
 import type { LevelData, Achievement } from "@shared/schema";
 
 interface ActivityModalProps {
@@ -72,29 +75,11 @@ export default function ActivityModal({ level, onClose, onComplete }: ActivityMo
       case 'code':
         return <CodeEditor level={level} onComplete={handleActivityComplete} />;
       case 'design':
-        return <div className="p-8 text-center">
-          <h3 className="text-2xl font-bold mb-4">🌐 Aktivitas Desain Web</h3>
-          <p className="mb-4">Buat tampilan wajah untuk Kody menggunakan HTML dan CSS!</p>
-          <Button onClick={() => handleActivityComplete(3)} disabled={isCompleting}>
-            Selesaikan Desain
-          </Button>
-        </div>;
+        return <WebDesignActivity level={level} onComplete={handleActivityComplete} />;
       case 'ui':
-        return <div className="p-8 text-center">
-          <h3 className="text-2xl font-bold mb-4">📱 Aktivitas UI/UX</h3>
-          <p className="mb-4">Rancang tombol kontrol yang mudah digunakan!</p>
-          <Button onClick={() => handleActivityComplete(3)} disabled={isCompleting}>
-            Selesaikan UI
-          </Button>
-        </div>;
+        return <UIDesignActivity level={level} onComplete={handleActivityComplete} />;
       case 'robot':
-        return <div className="p-8 text-center">
-          <h3 className="text-2xl font-bold mb-4">🤖 Aktivitas Robotika</h3>
-          <p className="mb-4">Kontrol pergerakan Kody dengan semua yang telah dipelajari!</p>
-          <Button onClick={() => handleActivityComplete(3)} disabled={isCompleting}>
-            Selesaikan Kontrol
-          </Button>
-        </div>;
+        return <RobotControlActivity level={level} onComplete={handleActivityComplete} />;
       default:
         return <div>Aktivitas tidak ditemukan</div>;
     }
