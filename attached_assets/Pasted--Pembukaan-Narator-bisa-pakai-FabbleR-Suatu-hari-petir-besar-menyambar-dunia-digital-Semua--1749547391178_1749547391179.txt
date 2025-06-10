@@ -1,0 +1,159 @@
+🎙️ Pembukaan (Narator, bisa pakai FabbleR)
+
+Suatu hari, petir besar menyambar dunia digital! Semua robot lumpuh, sistem mati, dan… Kody—robot kecil penjelajah—ikut terkena dampaknya!
+Tapi tunggu… sinyal Kody masih menyala kecil!
+Ia butuh bantuan dari tim teknisi cilik... yaitu kamu semua!
+Kita akan menyusuri 5 dunia untuk memperbaiki bagian-bagian penting dari tubuh Kody—dari tombol ON/OFF, sistem otak, layar wajah, sampai kaki robotnya!
+Siap bantu hidupkan Kody? Kita mulai petualangan dari... Dunia Digital!
+
+🛠️ STRUKTUR STORYTELLING BERDASARKAN DUNIA
+🌍 Level 1 – Dunia Digital (Digital Literacy)
+Judul: “Cari Tombol Rahasia Kody”
+Tujuan: Anak mengenali bagian-bagian digital dalam robot: tombol, sensor, layar, charger, input-output.
+
+🧩 Aktivitas:
+
+Anak melihat gambar Kody rusak: tombol copot, layar mati, kabel lepas.
+
+Gunakan puzzle: cocokin bagian-bagian robot ke tempatnya.
+
+Anak disuruh menyentuh “Makey Makey” tombol ON yang disambungkan ke komputer → suara “Kody on… beep!”
+
+Web: klik tombol interaktif → muncul animasi nyala.
+
+🧠 Pengetahuan:
+
+Apa itu hardware/software
+
+Fungsi tombol dan sensor
+
+Kenapa semua sistem digital butuh perintah
+
+🎁 Misi selesai jika: Tombol on/off bisa aktif. Anak dapat stiker “Power On Engineer”
+
+🐍 Level 2 – Negeri Pythonia
+Judul: “Ajari Kody Bahasa Mesin!”
+Tujuan: Anak menyalakan dan mematikan fungsi dengan instruksi Python.
+
+🧩 Aktivitas:
+
+Anak mengetik:
+
+python
+Salin
+Edit
+power = "on"
+if power == "on":
+    print("Kody aktif!")
+Output muncul di layar/suara robot: “Aktif!”
+
+Bisa disimulasikan di Pyodide editor di browser.
+
+🧠 Pengetahuan:
+
+Apa itu instruksi
+
+Coding = memberi perintah
+
+Fungsi kondisi if-else
+
+🎁 Misi selesai jika: Kody bisa hidup dan mati sesuai instruksi. Stiker: “Koding Master Mini”
+
+🌐 Level 3 – Webtopia
+Judul: “Pasang Wajah Kody di Layar”
+Tujuan: Anak membuat tampilan visual dari robot Kody (status, pesan, emosi).
+
+🧩 Aktivitas:
+
+Anak isi template HTML sederhana:
+
+html
+Salin
+Edit
+<h1>Halo, aku Kody!</h1>
+<p>Status: Aktif</p>
+Ganti warna background layar robot, emoji ekspresi, dan nama.
+
+Visual tampil langsung sebagai “wajah” Kody di layar (div + CSS)
+
+🧠 Pengetahuan:
+
+Apa itu tampilan visual
+
+Komponen media digital
+
+Web = tempat kita menampilkan program
+
+🎁 Misi selesai jika: Anak bisa munculkan wajah/suara di layar Kody. Stiker: “Desainer Wajah Robot”
+
+📱 Level 4 – Applandia
+Judul: “Bikin Tombol Ajaib Kody”
+Tujuan: Anak buat tombol-tombol perintah untuk Kody: suara, gerak, senyum, alarm.
+
+🧩 Aktivitas:
+
+Drag-and-drop UI tombol: “Jalan”, “Tersenyum”, “Halo!”
+
+Klik tombol → Kody bersuara atau bergerak
+
+Bisa pakai Makey Makey (tombol dari kertas aluminium/lego) → sentuh = perintah aktif
+
+🧠 Pengetahuan:
+
+UI/UX sederhana
+
+Sebab-akibat digital
+
+Tombol digital bisa mengontrol sesuatu nyata
+
+🎁 Misi selesai jika: Setidaknya 3 tombol bisa jalan. Stiker: “Tukang Rakit Tombol”
+
+🤖 Level 5 – Robotron
+Judul: “Saatnya Kody Bergerak!”
+Tujuan: Anak gunakan semua yang sudah dipelajari untuk mengontrol Kody.
+
+🧩 Aktivitas:
+
+Robot Kody muncul (fisik: MTR Sensing / virtual: di layar).
+
+Anak berikan instruksi lewat Makey Makey + tombol digital: maju, belok, berhenti.
+
+Atau ketik script Python:
+
+python
+Salin
+Edit
+move = "maju"
+if move == "maju":
+    print("Kody jalan!")
+Bonus: Lintasan seperti maze mini
+
+🧠 Pengetahuan:
+
+Semua bagian robot bekerja karena gabungan sistem
+
+Anak menyatukan konsep: perintah → tampilan → aksi
+
+🎁 Misi selesai jika: Kody bisa bergerak & merespons. Stiker: “Master Kontrol Robot”
+
+🏁 PENUTUP:
+🎙️ “KODY TELAH HIDUP KEMBALI!”
+
+Terima kasih para teknisi kecil! Dunia digital telah selamat! Sekarang Kody punya tombol, punya otak, wajah ceria, dan kaki untuk melangkah… semua karena kalian! Kalian bukan cuma murid… kalian pahlawan digital masa depan!
+
+🎁 Hadiah:
+
+Sertifikat otomatis (QR Form prefilled)
+
+Lencana digital
+
+Akses ke kelas lanjutan (Free Trial Coding)
+
+⚙️ IMPLEMENTASI CEPAT:
+Web-based: Semua interaktif pakai 1 halaman HTML terintegrasi (Codex bisa generate).
+
+Makey Makey: Sambung tombol aluminium/kertas ke port USB (detection = tombol keyboard).
+
+Robot fisik (opsional): Trigger gerakan pakai isyarat dari tombol/Makey/JS event.
+
+Bisa dijalankan pakai laptop, tablet, dan proyektor kelas.
