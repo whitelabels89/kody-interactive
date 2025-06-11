@@ -24,7 +24,7 @@ export const achievementTemplates = {
   },  
   level4: {
     id: "button-builder",
-    title: "Tukang Rakit Tombol",
+    title: "Ahli Rakit Tombol",
     description: "Berhasil membuat tombol kontrol!",
     icon: "📱",
     level: 4,
