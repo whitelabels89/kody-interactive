@@ -40,7 +40,7 @@ export default function ActivityModal({ level, onClose, onComplete }: ActivityMo
       1: "Power On Engineer",
       2: "Koding Master Mini", 
       3: "Desainer Wajah Robot",
-      4: "Tukang Rakit Tombol",
+      4: "Ahli Tombol",
       5: "Master Kontrol Robot"
     };
     return titles[levelId as keyof typeof titles] || "Pahlawan Digital";
