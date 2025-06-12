@@ -16,7 +16,7 @@ export default function WebDesignActivity({ level, onComplete }: WebDesignActivi
   const [robotName, setRobotName] = useState("Kody");
   const [statusMessage, setStatusMessage] = useState("Aktif");
   const [backgroundColor, setBackgroundColor] = useState("blue");
-  const [emoji, setEmoji] = useState("😊");
+  const [emoji, setEmoji] = useState("🤖");
   const [isComplete, setIsComplete] = useState(false);
 
   const backgroundColors = {
@@ -27,7 +27,7 @@ export default function WebDesignActivity({ level, onComplete }: WebDesignActivi
     pink: "bg-pink-500"
   };
 
-  const emojiOptions = ["😊", "🤖", "😄", "😎", "🚀", "⚡", "💫", "🌟"];
+  const emojiOptions = ["🤖", "🚀", "⚡", "💫", "🌟", "🔋", "⚙️", "🎯"];
 
   const handlePreview = () => {
     setIsComplete(true);
@@ -36,7 +36,7 @@ export default function WebDesignActivity({ level, onComplete }: WebDesignActivi
   const handleComplete = () => {
     let stars = 1;
     if (robotName.length > 0 && statusMessage.length > 0) stars = 2;
-    if (robotName !== "Kody" || statusMessage !== "Aktif" || backgroundColor !== "blue" || emoji !== "😊") stars = 3;
+    if (robotName !== "Kody" || statusMessage !== "Aktif" || backgroundColor !== "blue" || emoji !== "🤖") stars = 3;
     
     onComplete(stars);
   };
@@ -296,7 +296,7 @@ export default function WebDesignActivity({ level, onComplete }: WebDesignActivi
                 {['🔵', '🟢', '🟡', '🔴'].map((color, i) => (
                   <button 
                     key={i}
-                    className="w-12 h-12 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center text-xl transition-all duration-300 hover:scale-110 animate-heartbeat ml-[70px] mr-[70px]"
+                    className="w-12 h-12 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center text-xl transition-all duration-300 hover:scale-110 animate-heartbeat ml-[0px] mr-[0px]"
                     style={{animationDelay: `${i * 0.2}s`}}
                   >
                     {color}

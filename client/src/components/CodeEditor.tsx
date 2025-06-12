@@ -110,11 +110,26 @@ export default function CodeEditor({ level, onComplete }: CodeEditorProps) {
             </div>
 
             {/* Virtual Kody Response */}
-            <Card className="bg-green-50 border-2 border-green-200">
+            <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-2 border-green-200 animate-pulse">
               <CardContent className="pt-4">
-                <h4 className="font-semibold text-green-600 mb-2">🤖 Respons Kody:</h4>
-                <div className={kodyResponseClass}>
-                  {kodyResponse}
+                <h4 className="font-semibold text-green-600 mb-2 flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+                  🤖 Respons Kody:
+                </h4>
+                <div className={`${kodyResponseClass} text-lg font-semibold`}>
+                  {kodyResponse && (
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl animate-bounce">⚡</span>
+                        <span>{kodyResponse}</span>
+                      </div>
+                      {kodyResponse.includes("Sistem power aktif") && (
+                        <div className="text-blue-600 animate-pulse">
+                          🎉 LUAR BIASA! Kody sudah mulai bergerak! Sistem Python berhasil diaktifkan!
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>

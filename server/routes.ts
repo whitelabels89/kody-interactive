@@ -176,24 +176,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
           kodyResponse = "🤖 Beep beep! Sistem power aktif! Terima kasih sudah menghidupkan saya!";
           success = true;
         }
-        // Check if it's the "off" case with if-else structure
+        // Check if it's the "off" case with if-else structure - this should show output but not complete level
         else if ((code.includes("power = 'off'") || code.includes('power = "off"')) && 
                  (code.includes("if power == 'on'") || code.includes('if power == "on"')) &&
-                 code.includes("else:")) {
-          // Check for sleep message in else block
-          if (code.includes("Kody tidur")) {
-            output = "Kody tidur...";
-            kodyResponse = "🤖 Zzz... Sistem power off. Aku akan tidur sekarang. Selamat malam!";
-            success = true;
-          }
+                 code.includes("else:") &&
+                 (code.includes("Kody tidur") || code.includes("print('Kody tidur')") || code.includes('print("Kody tidur")'))) {
+          output = "Kody tidur...";
+          kodyResponse = "🤖 Zzz... Sistem power off. Aku akan tidur sekarang. Level belum selesai - harus aktifkan Kody!";
+          success = false; // Don't complete level when Kody is sleeping
         }
         // Check for direct "off" condition
         else if ((code.includes("power = 'off'") || code.includes('power = "off"')) && 
                  (code.includes("if power == 'off'") || code.includes('if power == "off"')) &&
-                 code.includes("Kody tidur")) {
+                 (code.includes("Kody tidur") || code.includes("print('Kody tidur')") || code.includes('print("Kody tidur")'))) {
           output = "Kody tidur...";
-          kodyResponse = "🤖 Zzz... Sistem power off. Aku akan tidur sekarang. Selamat malam!";
-          success = true;
+          kodyResponse = "🤖 Zzz... Sistem power off. Aku akan tidur sekarang. Level belum selesai - harus aktifkan Kody!";
+          success = false; // Don't complete level when Kody is sleeping
+        }
+        // Handle valid syntax but incomplete logic (missing else or print statements)
+        else if ((code.includes("power = 'off'") || code.includes('power = "off"')) &&
+                 (code.includes("if power == 'on'") || code.includes('if power == "on"'))) {
+          // Valid syntax structure, but since power is off and condition checks for on, it should go to else
+          // If else block exists but doesn't have proper print, help user
+          if (code.includes("else:")) {
+            output = "Kody tidur...";
+            kodyResponse = "🤖 Kode sudah benar! Tapi aku tidur karena power = 'off'. Ganti ke 'on' untuk menyelesaikan level!";
+            success = false;
+          } else {
+            output = "# Tambahkan blok 'else:' dan print('Kody tidur...') untuk kondisi power off";
+            kodyResponse = "🤖 Kode hampir benar! Tambahkan blok 'else:' ya!";
+            success = false;
+          }
         }
       } else if (code.includes("move = 'maju'") || code.includes('move = "maju"')) {
         if (code.includes("if move == 'maju'") || code.includes('if move == "maju"')) {
@@ -203,9 +216,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
-      if (!success) {
-        output = "# Periksa kode Anda. Pastikan menggunakan sintaks yang benar.";
-        kodyResponse = "🤖 Hmm... sepertinya ada yang salah dengan instruksinya. Coba lagi ya!";
+      // If no specific case matched but code looks like valid Python structure, provide better feedback
+      if (!success && !output) {
+        if (code.includes("power =") && code.includes("if") && code.includes("print")) {
+          output = "# Kode terlihat benar, tapi periksa format variabel dan kondisi if-else";
+          kodyResponse = "🤖 Struktur kode sudah bagus! Periksa lagi nilai variabel dan kondisi if-else ya!";
+        } else {
+          output = "# Periksa kode Anda. Pastikan menggunakan sintaks yang benar.";
+          kodyResponse = "🤖 Hmm... sepertinya ada yang salah dengan instruksinya. Coba lagi ya!";
+        }
       }
 
       res.json({

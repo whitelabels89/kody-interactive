@@ -73,6 +73,22 @@ export default function UIDesignActivity({ level, onComplete }: UIDesignActivity
     }, 1000);
   };
 
+  const handleTestPanel = () => {
+    if (selectedButtons.length === 0) return;
+    
+    setKodyResponse(`Panel diuji! ${selectedButtons.length} tombol aktif: ${selectedButtons.map(id => {
+      const button = controlButtons.find(b => b.id === id);
+      return button?.label;
+    }).join(", ")}`);
+    setKodyResponseClass("text-blue-600 font-semibold");
+    
+    // Add visual feedback
+    setTimeout(() => {
+      setKodyResponse("Panel berfungsi dengan baik! Siap untuk menyelesaikan level.");
+      setKodyResponseClass("text-green-600 font-bold");
+    }, 2000);
+  };
+
   const handleCompleteUI = () => {
     let stars = 1;
     if (selectedButtons.length >= 2) stars = 2;
@@ -180,9 +196,9 @@ export default function UIDesignActivity({ level, onComplete }: UIDesignActivity
                       }`}
                       style={{animationDelay: `${selectedButtons.indexOf(buttonId) * 0.2}s`}}
                     >
-                      <div className="flex flex-col items-center">
-                        <span className="mb-1 text-lg floating-icon">{button.icon}</span>
-                        <span className="text-xs">{button.label}</span>
+                      <div className="flex flex-col items-center justify-center h-full">
+                        <span className="mb-1 text-lg">{button.icon}</span>
+                        <span className="text-xs text-center leading-tight">{button.label}</span>
                       </div>
                     </Button>
                   );
@@ -193,11 +209,14 @@ export default function UIDesignActivity({ level, onComplete }: UIDesignActivity
               {selectedButtons.length > 0 && (
                 <div className="border-t border-gray-700 pt-4">
                   <div className="flex justify-center gap-2">
-                    <Button onClick={() => setSelectedButtons([])} variant="outline" size="sm" className="text-white border-gray-600 hover:bg-gray-700">
+                    <Button onClick={() => setSelectedButtons([])} variant="outline" size="sm" className="text-gray-800 bg-white border-gray-600 hover:bg-gray-200">
                       Reset All
                     </Button>
-                    <Button onClick={handleCompleteUI} variant="outline" size="sm" className="text-green-400 border-green-400 hover:bg-green-400 hover:text-black">
+                    <Button onClick={handleTestPanel} variant="outline" size="sm" className="text-green-400 border-green-400 hover:bg-green-400 hover:text-black">
                       Test Panel
+                    </Button>
+                    <Button onClick={handleCompleteUI} variant="outline" size="sm" className="text-blue-400 border-blue-400 hover:bg-blue-400 hover:text-white">
+                      Selesai
                     </Button>
                   </div>
                 </div>

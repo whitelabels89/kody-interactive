@@ -42,6 +42,53 @@ else:
   const [kodyResponse, setKodyResponse] = useState("Menunggu instruksi lengkap...");
   const [kodyResponseClass, setKodyResponseClass] = useState("text-gray-600");
   const [isSimulating, setIsSimulating] = useState(false);
+  const [isPowerOn, setIsPowerOn] = useState(false);
+
+  // Sound effect functions
+  const playRobotEngineStart = () => {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    
+    // Create robot engine start sound effect
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(80, audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.5);
+    oscillator.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + 1);
+    
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.1);
+    gainNode.gain.exponentialRampToValueAtTime(0.1, audioContext.currentTime + 1);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 1.5);
+  };
+
+  const playRobotSound = () => {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    
+    // Create robot beep sound
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(880, audioContext.currentTime + 0.1);
+    oscillator.frequency.setValueAtTime(440, audioContext.currentTime + 0.2);
+    
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.05);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3);
+  };
 
   const tasks = [
     { id: "power", label: "Nyalakan Power", code: 'power = "on"', completed: false },
@@ -111,6 +158,9 @@ else:
   };
 
   const handleManualControl = (direction: 'up' | 'down' | 'left' | 'right') => {
+    // Play movement sound
+    playRobotSound();
+    
     setRobotPosition(prev => {
       let newX = prev.x;
       let newY = prev.y;
@@ -124,16 +174,22 @@ else:
       
       return { x: newX, y: newY, direction };
     });
+    
+    setKodyResponse(`Kody bergerak ${direction === 'up' ? 'ke atas' : direction === 'down' ? 'ke bawah' : direction === 'left' ? 'ke kiri' : 'ke kanan'}! *BEEP*`);
+    setKodyResponseClass("text-blue-600 font-semibold");
   };
 
   const handleQuickAction = (action: string) => {
     switch (action) {
       case 'power':
-        setKodyResponse("Kody dinyalakan! ⚡");
+        setIsPowerOn(true);
+        playRobotEngineStart();
+        setKodyResponse("Kody dinyalakan! ⚡ *VROOOOM ENGINE START*");
         setKodyResponseClass("text-green-600 font-semibold");
         break;
       case 'sound':
-        setKodyResponse("Beep beep! 🎵");
+        playRobotSound();
+        setKodyResponse("Beep beep! 🎵 *ROBOT SOUND ACTIVATED*");
         setKodyResponseClass("text-purple-600 font-semibold");
         break;
       case 'smile':
