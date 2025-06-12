@@ -30,29 +30,40 @@ export default function ThreeDGameActivity({ level, onComplete }: ThreeDGameActi
       <html>
       <head>
         <style>
-          body { margin: 0; padding: 0; overflow: hidden; background: #001122; font-family: Arial, sans-serif; }
-          #gameCanvas { display: block; }
+          body { 
+            margin: 0; padding: 0; overflow: hidden; 
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%); 
+            font-family: 'Comic Sans MS', Arial, sans-serif; 
+            user-select: none;
+          }
+          #gameCanvas { display: block; outline: none; }
           #instructions { 
-            position: absolute; top: 20px; left: 20px; color: #00ffff; 
-            background: rgba(0,0,0,0.8); padding: 15px; border-radius: 10px;
-            font-size: 14px; z-index: 100;
+            position: absolute; top: 20px; left: 20px; color: #ffffff; 
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4); 
+            padding: 15px; border-radius: 20px;
+            font-size: 14px; z-index: 100; font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 3px solid #ffffff;
           }
           #score { 
-            position: absolute; top: 20px; right: 20px; color: #ffff00; 
-            background: rgba(0,0,0,0.8); padding: 15px; border-radius: 10px;
-            font-size: 16px; font-weight: bold; z-index: 100;
+            position: absolute; top: 20px; right: 20px; color: #ffffff; 
+            background: linear-gradient(45deg, #ffeaa7, #fab1a0); 
+            padding: 15px; border-radius: 20px;
+            font-size: 18px; font-weight: bold; z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 3px solid #ffffff;
           }
+          .emoji { font-size: 20px; }
         </style>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
       </head>
       <body>
         <div id="instructions">
-          🎮 <strong>Kontrol Kody Robot</strong><br>
-          ↑ ↓ ← → atau WASD untuk bergerak<br>
-          Kumpulkan kristal biru untuk skor!<br>
-          Kompatibel dengan Makey Makey
+          <span class="emoji">🤖</span> <strong>Petualangan Kody di Dunia 3D!</strong><br>
+          <span class="emoji">🎮</span> Gunakan ↑↓←→ atau WASD<br>
+          <span class="emoji">💎</span> Kumpulkan semua kristal ajaib!
         </div>
-        <div id="score">Skor: <span id="scoreValue">0</span></div>
+        <div id="score"><span class="emoji">🌟</span> Kristal: <span id="scoreValue">0</span>/8</div>
         
         <script>
           // Game variables
@@ -80,50 +91,58 @@ export default function ThreeDGameActivity({ level, onComplete }: ThreeDGameActi
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             document.body.appendChild(renderer.domElement);
             
-            // Lighting
-            const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
+            // Bright, colorful lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
             scene.add(ambientLight);
             
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            const directionalLight = new THREE.DirectionalLight(0xffff88, 1.0);
             directionalLight.position.set(50, 100, 50);
             directionalLight.castShadow = true;
             directionalLight.shadow.mapSize.width = 2048;
             directionalLight.shadow.mapSize.height = 2048;
             scene.add(directionalLight);
             
-            // Ground
+            // Rainbow colored ground
             const groundGeometry = new THREE.PlaneGeometry(100, 100);
             const groundMaterial = new THREE.MeshLambertMaterial({ 
-              color: 0x002244,
+              color: 0x90EE90,
               transparent: true,
-              opacity: 0.8
+              opacity: 0.9
             });
             const ground = new THREE.Mesh(groundGeometry, groundMaterial);
             ground.rotation.x = -Math.PI / 2;
             ground.receiveShadow = true;
             scene.add(ground);
             
-            // Grid pattern for futuristic look
-            const gridHelper = new THREE.GridHelper(100, 20, 0x00ffff, 0x004466);
+            // Colorful grid pattern
+            const gridHelper = new THREE.GridHelper(100, 20, 0xff69b4, 0x87ceeb);
             scene.add(gridHelper);
             
-            // Create robot (simple box character)
+            // Create colorful Kody robot
             const robotGeometry = new THREE.BoxGeometry(2, 3, 2);
-            const robotMaterial = new THREE.MeshLambertMaterial({ color: 0xff6600 });
+            const robotMaterial = new THREE.MeshLambertMaterial({ color: 0xff69b4 }); // Hot pink
             robot = new THREE.Mesh(robotGeometry, robotMaterial);
             robot.position.set(0, 1.5, 0);
             robot.castShadow = true;
             scene.add(robot);
             
-            // Robot eyes
-            const eyeGeometry = new THREE.SphereGeometry(0.2, 8, 8);
-            const eyeMaterial = new THREE.MeshLambertMaterial({ color: 0x00ffff });
+            // Happy robot eyes
+            const eyeGeometry = new THREE.SphereGeometry(0.3, 8, 8);
+            const eyeMaterial = new THREE.MeshLambertMaterial({ color: 0xffff00 }); // Bright yellow
             const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
             const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
             leftEye.position.set(-0.4, 0.5, 1.1);
             rightEye.position.set(0.4, 0.5, 1.1);
             robot.add(leftEye);
             robot.add(rightEye);
+            
+            // Robot smile
+            const smileGeometry = new THREE.TorusGeometry(0.4, 0.1, 8, 16, Math.PI);
+            const smileMaterial = new THREE.MeshLambertMaterial({ color: 0x32cd32 }); // Lime green
+            const smile = new THREE.Mesh(smileGeometry, smileMaterial);
+            smile.position.set(0, 0, 1.1);
+            smile.rotation.z = Math.PI;
+            robot.add(smile);
             
             // Create walls (city buildings)
             createWalls();
@@ -145,12 +164,13 @@ export default function ThreeDGameActivity({ level, onComplete }: ThreeDGameActi
               [0, 0, -30], [0, 0, 30], [-30, 0, 0], [30, 0, 0]
             ];
             
-            wallPositions.forEach(pos => {
+            const colors = [0xff6b6b, 0x4ecdc4, 0x45b7d1, 0xf9ca24, 0xf0932b, 0xeb4d4b, 0x6c5ce7, 0xa29bfe];
+            wallPositions.forEach((pos, index) => {
               const wallGeometry = new THREE.BoxGeometry(4, 8, 4);
               const wallMaterial = new THREE.MeshLambertMaterial({ 
-                color: 0x333366,
+                color: colors[index % colors.length],
                 transparent: true,
-                opacity: 0.8
+                opacity: 0.9
               });
               const wall = new THREE.Mesh(wallGeometry, wallMaterial);
               wall.position.set(pos[0], 4, pos[2]);
@@ -158,16 +178,16 @@ export default function ThreeDGameActivity({ level, onComplete }: ThreeDGameActi
               scene.add(wall);
               walls.push(wall);
               
-              // Add glowing effect
-              const glowGeometry = new THREE.BoxGeometry(4.5, 8.5, 4.5);
-              const glowMaterial = new THREE.MeshBasicMaterial({ 
-                color: 0x0066ff,
+              // Add sparkle effect
+              const sparkleGeometry = new THREE.BoxGeometry(4.2, 8.2, 4.2);
+              const sparkleMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xffffff,
                 transparent: true,
-                opacity: 0.2
+                opacity: 0.3
               });
-              const glow = new THREE.Mesh(glowGeometry, glowMaterial);
-              glow.position.copy(wall.position);
-              scene.add(glow);
+              const sparkle = new THREE.Mesh(sparkleGeometry, sparkleMaterial);
+              sparkle.position.copy(wall.position);
+              scene.add(sparkle);
             });
           }
           
@@ -177,22 +197,28 @@ export default function ThreeDGameActivity({ level, onComplete }: ThreeDGameActi
               [15, 1, 0], [-15, 1, 0], [0, 1, 15], [0, 1, -15]
             ];
             
-            crystalPositions.forEach(pos => {
-              const crystalGeometry = new THREE.OctahedronGeometry(1);
+            const crystalColors = [0xff1493, 0x00ff7f, 0x1e90ff, 0xffd700, 0xff69b4, 0x32cd32, 0xff6347, 0x9370db];
+            crystalPositions.forEach((pos, index) => {
+              const crystalGeometry = new THREE.OctahedronGeometry(1.2);
               const crystalMaterial = new THREE.MeshLambertMaterial({ 
-                color: 0x00ffff,
+                color: crystalColors[index % crystalColors.length],
                 transparent: true,
-                opacity: 0.8
+                opacity: 0.9
               });
               const crystal = new THREE.Mesh(crystalGeometry, crystalMaterial);
-              crystal.position.set(pos[0], pos[1], pos[2]);
-              crystal.userData = { collected: false };
+              crystal.position.set(pos[0], pos[1] + 2, pos[2]);
+              crystal.userData = { collected: false, originalY: pos[1] + 2 };
               scene.add(crystal);
               crystals.push(crystal);
             });
           }
           
           function onKeyDown(event) {
+            // Prevent default behavior for arrow keys to stop page scrolling
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.code)) {
+              event.preventDefault();
+            }
+            
             switch(event.code) {
               case 'ArrowUp':
               case 'KeyW':
@@ -214,6 +240,11 @@ export default function ThreeDGameActivity({ level, onComplete }: ThreeDGameActi
           }
           
           function onKeyUp(event) {
+            // Prevent default behavior for arrow keys to stop page scrolling
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.code)) {
+              event.preventDefault();
+            }
+            
             switch(event.code) {
               case 'ArrowUp':
               case 'KeyW':
@@ -296,11 +327,18 @@ export default function ThreeDGameActivity({ level, onComplete }: ThreeDGameActi
             updateRobot();
             checkCollisions();
             
-            // Rotate crystals for visual effect
-            crystals.forEach(crystal => {
+            // Animate crystals with floating and rotation
+            crystals.forEach((crystal, index) => {
               if (!crystal.userData.collected) {
-                crystal.rotation.y += 0.02;
-                crystal.position.y = 1 + Math.sin(Date.now() * 0.003 + crystal.position.x) * 0.2;
+                crystal.rotation.y += 0.03;
+                crystal.rotation.x += 0.01;
+                // Different floating speeds for each crystal
+                const time = Date.now() * 0.002;
+                crystal.position.y = crystal.userData.originalY + Math.sin(time + index) * 0.5;
+                
+                // Add subtle scale pulsing
+                const scale = 1 + Math.sin(time * 2 + index) * 0.1;
+                crystal.scale.set(scale, scale, scale);
               }
             });
             
