@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Trophy } from "lucide-react";
 import type { Achievement } from "@shared/schema";
@@ -12,6 +12,10 @@ export default function AchievementModal({ achievement, onClose }: AchievementMo
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle className="sr-only">Achievement Unlocked</DialogTitle>
+          <DialogDescription className="sr-only">You have earned a new achievement</DialogDescription>
+        </DialogHeader>
         <div className="text-center p-4">
           <div className="mb-6">
             <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center animate-bounce">

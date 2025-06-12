@@ -66,4 +66,17 @@ export const levelsData: LevelData[] = [
     isCompleted: false,
     stars: 0,
   },
+  {
+    id: 6,
+    title: "🌟 Dunia Robotron 3D",
+    subtitle: "Jelajahi Kota Futuristik!",
+    description: "Kontrol robot Kody di dunia 3D yang menakjubkan!",
+    type: "3dgame",
+    color: "cyan",
+    icon: "🎮",
+    skills: ["3D Graphics", "Game Control", "Makey Makey"],
+    isLocked: true,
+    isCompleted: false,
+    stars: 0,
+  },
 ];

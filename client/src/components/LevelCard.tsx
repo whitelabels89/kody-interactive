@@ -3,6 +3,108 @@ import { Badge } from "@/components/ui/badge";
 import { Lock, Star, CheckCircle, Clock } from "lucide-react";
 import type { LevelData } from "@shared/schema";
 
+const getWorldGradient = (levelId: number): string => {
+  const gradients = {
+    1: "from-blue-600 via-indigo-600 to-purple-600", // Digital World - Tech colors
+    2: "from-green-600 via-emerald-600 to-teal-600", // Pythonia - Nature/Snake colors
+    3: "from-orange-500 via-red-500 to-pink-500",    // Webtopia - Creative colors
+    4: "from-purple-600 via-violet-600 to-indigo-600", // Applandia - UI colors
+    5: "from-red-600 via-orange-600 to-yellow-500",   // Robotron - Robot/Fire colors
+    6: "from-cyan-500 via-blue-500 to-indigo-600"    // 3D Robotron - Futuristic colors
+  };
+  return gradients[levelId as keyof typeof gradients] || "from-gray-400 to-gray-600";
+};
+
+const getWorldMainIcon = (levelId: number): string => {
+  const icons = {
+    1: "🌐", // Digital World
+    2: "🐍", // Pythonia (Snake)
+    3: "🏰", // Webtopia (Castle/Web)
+    4: "📱", // Applandia (Apps)
+    5: "🤖", // Robotron (Robot)
+    6: "🎮"  // 3D Robotron (Game)
+  };
+  return icons[levelId as keyof typeof icons] || "⭐";
+};
+
+const getWorldTagline = (levelId: number): string => {
+  const taglines = {
+    1: "Dunia Digital Menanti",
+    2: "Negeri Bahasa Pemrograman",
+    3: "Kerajaan Desain Web",
+    4: "Kota Aplikasi",
+    5: "Planet Robot",
+    6: "Dimensi 3D Futuristik"
+  };
+  return taglines[levelId as keyof typeof taglines] || "Dunia Misterius";
+};
+
+const getWorldPattern = (levelId: number): React.ReactNode => {
+  const patterns = {
+    1: ( // Digital circuits pattern
+      <div className="grid grid-cols-8 gap-1 w-full h-full">
+        {Array.from({length: 64}, (_, i) => (
+          <div key={i} className={`w-1 h-1 ${i % 3 === 0 ? 'bg-white' : 'bg-transparent'} rounded-full`} />
+        ))}
+      </div>
+    ),
+    2: ( // Python/code pattern with floating keywords
+      <div className="relative w-full h-full overflow-hidden">
+        <div className="absolute top-2 left-2 text-white text-xs opacity-40 animate-pulse">def</div>
+        <div className="absolute top-6 right-4 text-white text-xs opacity-30 animate-pulse" style={{animationDelay: '0.5s'}}>if</div>
+        <div className="absolute bottom-8 left-6 text-white text-xs opacity-40 animate-pulse" style={{animationDelay: '1s'}}>for</div>
+        <div className="absolute bottom-4 right-2 text-white text-xs opacity-30 animate-pulse" style={{animationDelay: '1.5s'}}>print</div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xs opacity-50 animate-pulse" style={{animationDelay: '2s'}}>python</div>
+        <div className="absolute top-4 left-1/2 text-white text-xs opacity-30 animate-pulse" style={{animationDelay: '2.5s'}}>class</div>
+      </div>
+    ),
+    3: ( // Web design wireframe pattern
+      <div className="grid grid-cols-6 gap-1 w-full h-full p-2">
+        {Array.from({length: 18}, (_, i) => (
+          <div key={i} className={`bg-white rounded opacity-30 ${i % 4 === 0 ? 'col-span-2' : ''}`} 
+               style={{height: `${i % 3 === 0 ? '8px' : i % 5 === 0 ? '12px' : '4px'}`}} />
+        ))}
+      </div>
+    ),
+    4: ( // UI elements pattern with app icons
+      <div className="flex flex-wrap gap-1 w-full h-full items-center justify-center p-2">
+        <div className="w-4 h-4 bg-white rounded opacity-40"></div>
+        <div className="w-3 h-3 bg-white rounded-full opacity-30"></div>
+        <div className="w-6 h-2 bg-white rounded opacity-40"></div>
+        <div className="w-2 h-5 bg-white rounded opacity-30"></div>
+        <div className="w-5 h-3 bg-white rounded opacity-40"></div>
+        <div className="w-3 h-4 bg-white rounded opacity-30"></div>
+        <div className="w-4 h-2 bg-white rounded opacity-40"></div>
+      </div>
+    ),
+    5: ( // Robot/mechanical gear pattern
+      <div className="relative w-full h-full overflow-hidden">
+        <div className="absolute top-2 left-2 w-6 h-6 border-2 border-white rounded-full opacity-20 animate-spin" style={{animationDuration: '3s'}}></div>
+        <div className="absolute bottom-2 right-2 w-4 h-4 border-2 border-white rounded-full opacity-30 animate-spin" style={{animationDuration: '2s', animationDirection: 'reverse'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 border-2 border-white rounded-full opacity-25 animate-spin" style={{animationDuration: '4s'}}></div>
+        <div className="grid grid-cols-4 gap-1 w-full h-full p-2 opacity-20">
+          {Array.from({length: 8}, (_, i) => (
+            <div key={i} className="bg-white rounded" style={{height: '6px'}} />
+          ))}
+        </div>
+      </div>
+    ),
+    6: ( // 3D futuristic grid pattern
+      <div className="relative w-full h-full overflow-hidden">
+        <div className="grid grid-cols-6 gap-px w-full h-full opacity-30">
+          {Array.from({length: 36}, (_, i) => (
+            <div key={i} className={`bg-white ${i % 7 === 0 ? 'animate-pulse' : ''}`} style={{height: '2px'}} />
+          ))}
+        </div>
+        <div className="absolute top-2 right-2 text-white text-xs opacity-60 animate-bounce">3D</div>
+        <div className="absolute bottom-2 left-2 text-white text-xs opacity-60 animate-pulse">VR</div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 border border-white rounded-lg opacity-30 animate-spin" style={{animationDuration: '5s'}}></div>
+      </div>
+    )
+  };
+  return patterns[levelId as keyof typeof patterns] || null;
+};
+
 interface LevelCardProps {
   level: LevelData;
   onClick: () => void;
@@ -38,6 +140,12 @@ const colorClasses = {
     border: "border-red-500",
     text: "text-red-500",
     gradient: "from-red-500 to-red-600"
+  },
+  cyan: {
+    bg: "bg-cyan-500",
+    border: "border-cyan-500",
+    text: "text-cyan-500",
+    gradient: "from-cyan-500 to-cyan-600"
   }
 };
 
@@ -46,7 +154,8 @@ const typeIcons = {
   code: "💻", 
   design: "🎨",
   ui: "📱",
-  robot: "🤖"
+  robot: "🤖",
+  "3dgame": "🎮"
 };
 
 export default function LevelCard({ level, onClick }: LevelCardProps) {
@@ -71,12 +180,16 @@ export default function LevelCard({ level, onClick }: LevelCardProps) {
           <h3 className="text-2xl font-bold text-gray-800 mb-3">{level.title}</h3>
           <h4 className={`text-lg font-semibold ${colors.text} mb-4`}>"{level.subtitle}"</h4>
           
-          {/* Level Image */}
-          <img 
-            src={`https://images.unsplash.com/photo-${level.id === 1 ? '1581091226825' : level.id === 2 ? '1551650975' : level.id === 3 ? '1509062522246' : level.id === 4 ? '1551650975' : '1546776230'}-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200`}
-            alt={`${level.title} educational content`}
-            className="w-full h-32 object-cover rounded-xl mb-4 opacity-80"
-          />
+          {/* World Illustration */}
+          <div className={`w-full h-32 rounded-xl mb-4 bg-gradient-to-br ${getWorldGradient(level.id)} flex items-center justify-center relative overflow-hidden`}>
+            <div className="absolute inset-0 opacity-20">
+              {getWorldPattern(level.id)}
+            </div>
+            <div className="relative z-10 text-center text-white">
+              <div className="text-4xl mb-2">{getWorldMainIcon(level.id)}</div>
+              <div className="text-xs font-semibold opacity-90">{getWorldTagline(level.id)}</div>
+            </div>
+          </div>
           
           <p className="text-gray-600 mb-4">{level.description}</p>
           
@@ -106,7 +219,8 @@ export default function LevelCard({ level, onClick }: LevelCardProps) {
               {level.type === 'puzzle' ? 'Puzzle' : 
                level.type === 'code' ? 'Coding' :
                level.type === 'design' ? 'Desain' :
-               level.type === 'ui' ? 'UI/UX' : 'Kontrol'}
+               level.type === 'ui' ? 'UI/UX' : 
+               level.type === '3dgame' ? '3D Game' : 'Kontrol'}
             </div>
           </div>
 

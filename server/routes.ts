@@ -166,13 +166,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let kodyResponse = "";
       let success = false;
 
-      if (code.includes("power = 'on'") || code.includes('power = "on"')) {
-        if (code.includes("if power == 'on'") || code.includes('if power == "on"')) {
-          if (code.includes("print('Kody aktif!')") || code.includes('print("Kody aktif!")')) {
-            output = "Kody aktif!";
-            kodyResponse = "🤖 Beep beep! Sistem power aktif! Terima kasih sudah menghidupkan saya!";
+      // Check for power control
+      if (code.includes("power =")) {
+        // Check if it's the "on" case
+        if ((code.includes("power = 'on'") || code.includes('power = "on"')) && 
+            (code.includes("if power == 'on'") || code.includes('if power == "on"')) &&
+            (code.includes("print('Kody aktif!')") || code.includes('print("Kody aktif!")'))) {
+          output = "Kody aktif!";
+          kodyResponse = "🤖 Beep beep! Sistem power aktif! Terima kasih sudah menghidupkan saya!";
+          success = true;
+        }
+        // Check if it's the "off" case with if-else structure
+        else if ((code.includes("power = 'off'") || code.includes('power = "off"')) && 
+                 (code.includes("if power == 'on'") || code.includes('if power == "on"')) &&
+                 code.includes("else:")) {
+          // Check for sleep message in else block
+          if (code.includes("Kody tidur")) {
+            output = "Kody tidur...";
+            kodyResponse = "🤖 Zzz... Sistem power off. Aku akan tidur sekarang. Selamat malam!";
             success = true;
           }
+        }
+        // Check for direct "off" condition
+        else if ((code.includes("power = 'off'") || code.includes('power = "off"')) && 
+                 (code.includes("if power == 'off'") || code.includes('if power == "off"')) &&
+                 code.includes("Kody tidur")) {
+          output = "Kody tidur...";
+          kodyResponse = "🤖 Zzz... Sistem power off. Aku akan tidur sekarang. Selamat malam!";
+          success = true;
         }
       } else if (code.includes("move = 'maju'") || code.includes('move = "maju"')) {
         if (code.includes("if move == 'maju'") || code.includes('if move == "maju"')) {

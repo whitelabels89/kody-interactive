@@ -108,7 +108,7 @@ export interface LevelData {
   title: string;
   subtitle: string;
   description: string;
-  type: 'puzzle' | 'code' | 'design' | 'ui' | 'robot';
+  type: 'puzzle' | 'code' | 'design' | 'ui' | 'robot' | '3dgame';
   color: string;
   icon: string;
   skills: string[];

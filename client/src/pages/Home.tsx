@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react";
-import { Volume2, VolumeX, Play, Info, HelpCircle } from "lucide-react";
+import { Volume2, VolumeX, Play, Info, HelpCircle, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGameState } from "@/hooks/useGameState";
 import LevelCard from "@/components/LevelCard";
 import ActivityModal from "@/components/ActivityModal";
 import AchievementModal from "@/components/AchievementModal";
+import CertificateModal from "@/components/CertificateModal";
 import ProgressBar from "@/components/ProgressBar";
 import { levelsData } from "@/lib/levels";
 import type { LevelData, Achievement } from "@shared/schema";
+import headerImage from "@assets/header_1749711972120.jpg";
 
 export default function Home() {
   const { gameState, updateGameState, completeLevel } = useGameState();
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [selectedLevel, setSelectedLevel] = useState<LevelData | null>(null);
   const [showAchievement, setShowAchievement] = useState<Achievement | null>(null);
+  const [showCertificate, setShowCertificate] = useState(false);
 
   const scrollToLevels = () => {
     document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth' });
@@ -28,7 +31,7 @@ export default function Home() {
     }
   };
 
-  const progressPercentage = (gameState.completedLevels.length / 5) * 100;
+  const progressPercentage = (gameState.completedLevels.length / 6) * 100;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-orange-50">
@@ -74,9 +77,9 @@ export default function Home() {
           <div className="text-center mb-12">
             <div className="mb-8 flex justify-center">
               <img 
-                src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=400" 
-                alt="Kody the robot character needing help" 
-                className="w-48 h-48 object-cover rounded-3xl robot-shadow animate-wiggle" 
+                src={headerImage} 
+                alt="Team of young digital explorers with tablets ready for adventure" 
+                className="w-full max-w-4xl h-64 object-cover rounded-3xl robot-shadow hover-lift" 
               />
             </div>
             
@@ -95,14 +98,27 @@ export default function Home() {
               </p>
             </div>
             
-            <Button 
-              onClick={scrollToLevels}
-              size="lg"
-              className="mt-8 bg-white text-blue-600 px-8 py-4 rounded-2xl font-black text-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-2xl"
-            >
-              <Play className="w-6 h-6 mr-3" />
-              Mulai Petualangan!
-            </Button>
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                onClick={scrollToLevels}
+                size="lg"
+                className="bg-white text-blue-600 px-8 py-4 rounded-2xl font-black text-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-2xl"
+              >
+                <Play className="w-6 h-6 mr-3" />
+                Mulai Petualangan!
+              </Button>
+              
+              {gameState.completedLevels.length > 0 && (
+                <Button 
+                  onClick={() => setShowCertificate(true)}
+                  size="lg"
+                  className="bg-yellow-500 text-white px-8 py-4 rounded-2xl font-black text-xl hover:bg-yellow-600 transform hover:scale-105 transition-all duration-200 shadow-2xl"
+                >
+                  <Award className="w-6 h-6 mr-3" />
+                  Sertifikat
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -188,15 +204,15 @@ export default function Home() {
       {/* Certificate Preview */}
       <section className="py-16 bg-gradient-to-r from-purple-500 to-purple-600 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-black mb-6">🏆 Sertifikat Teknisi Kody</h2>
+          <h2 className="text-4xl font-black mb-6">🏆 Achievement Workshop 5 Digital World</h2>
           <p className="text-xl mb-8 opacity-90">
-            Selesaikan semua 5 level untuk mendapatkan sertifikat resmi sebagai "Pahlawan Digital Masa Depan"!
+            Selesaikan semua 6 level untuk mendapatkan sertifikat resmi sebagai "Pahlawan Digital" dengan nama kustommu!
           </p>
           
           <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 mb-8">
             <div className="bg-white text-gray-800 rounded-2xl p-8 transform hover:scale-105 transition-transform duration-200">
               <div className="border-4 border-purple-500 rounded-xl p-6">
-                <h3 className="text-2xl font-bold mb-4 text-purple-500">SERTIFIKAT TEKNISI KODY</h3>
+                <h3 className="text-2xl font-bold mb-4 text-purple-500">ACHIEVEMENT WORKSHOP 5 DIGITAL WORLD</h3>
                 <p className="text-lg mb-4">Diberikan kepada</p>
                 <div className="text-3xl font-black text-blue-500 border-b-2 border-gray-300 pb-2 mb-4">
                   PAHLAWAN DIGITAL
@@ -263,6 +279,13 @@ export default function Home() {
         <AchievementModal
           achievement={showAchievement}
           onClose={() => setShowAchievement(null)}
+        />
+      )}
+
+      {showCertificate && (
+        <CertificateModal
+          gameState={gameState}
+          onClose={() => setShowCertificate(false)}
         />
       )}
     </div>

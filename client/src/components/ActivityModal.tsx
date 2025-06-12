@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import PuzzleActivity from "./PuzzleActivity";
@@ -7,6 +7,7 @@ import CodeEditor from "./CodeEditor";
 import WebDesignActivity from "./WebDesignActivity";
 import UIDesignActivity from "./UIDesignActivity";
 import RobotControlActivity from "./RobotControlActivity";
+import ThreeDGameActivity from "./ThreeDGameActivity";
 import type { LevelData, Achievement } from "@shared/schema";
 
 interface ActivityModalProps {
@@ -39,9 +40,10 @@ export default function ActivityModal({ level, onClose, onComplete }: ActivityMo
     const titles = {
       1: "Power On Engineer",
       2: "Koding Master Mini", 
-      3: "Desainer Wajah Robot",
-      4: "Ahli Tombol",
-      5: "Master Kontrol Robot"
+      3: "Ahli Kontrol Panel",
+      4: "Ahli Aktivasi Tombol",
+      5: "Master Kontrol Robot",
+      6: "3D Navigator Champion"
     };
     return titles[levelId as keyof typeof titles] || "Pahlawan Digital";
   };
@@ -52,7 +54,8 @@ export default function ActivityModal({ level, onClose, onComplete }: ActivityMo
       2: "Berhasil menulis kode Python pertama!",
       3: "Berhasil mendesain wajah untuk Kody!",
       4: "Berhasil membuat tombol kontrol!",
-      5: "Berhasil mengontrol pergerakan Kody!"
+      5: "Berhasil mengontrol pergerakan Kody!",
+      6: "Berhasil menyelesaikan petualangan 3D Robotron!"
     };
     return descriptions[levelId as keyof typeof descriptions] || "Menyelesaikan tantangan!";
   };
@@ -63,7 +66,8 @@ export default function ActivityModal({ level, onClose, onComplete }: ActivityMo
       2: "🐍",
       3: "🎨", 
       4: "📱",
-      5: "🤖"
+      5: "🤖",
+      6: "🎮"
     };
     return icons[levelId as keyof typeof icons] || "🏆";
   };
@@ -80,6 +84,8 @@ export default function ActivityModal({ level, onClose, onComplete }: ActivityMo
         return <UIDesignActivity level={level} onComplete={handleActivityComplete} />;
       case 'robot':
         return <RobotControlActivity level={level} onComplete={handleActivityComplete} />;
+      case '3dgame':
+        return <ThreeDGameActivity level={level} onComplete={handleActivityComplete} />;
       default:
         return <div>Aktivitas tidak ditemukan</div>;
     }
@@ -100,6 +106,9 @@ export default function ActivityModal({ level, onClose, onComplete }: ActivityMo
               <X className="w-6 h-6" />
             </Button>
           </DialogTitle>
+          <DialogDescription className="text-lg text-gray-600">
+            {level.description}
+          </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-8">

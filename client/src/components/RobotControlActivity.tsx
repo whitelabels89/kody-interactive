@@ -126,6 +126,49 @@ else:
     });
   };
 
+  const handleQuickAction = (action: string) => {
+    switch (action) {
+      case 'power':
+        setKodyResponse("Kody dinyalakan! ⚡");
+        setKodyResponseClass("text-green-600 font-semibold");
+        break;
+      case 'sound':
+        setKodyResponse("Beep beep! 🎵");
+        setKodyResponseClass("text-purple-600 font-semibold");
+        break;
+      case 'smile':
+        setKodyResponse("Kody tersenyum! 😊");
+        setKodyResponseClass("text-yellow-600 font-semibold");
+        break;
+      case 'spin':
+        setKodyResponse("Kody berputar 360°! 🔄");
+        setKodyResponseClass("text-red-600 font-semibold");
+        break;
+      default:
+        setKodyResponse("Perintah tidak dikenal...");
+        setKodyResponseClass("text-gray-600");
+    }
+  };
+
+  const handleDirectionMove = (direction: 'up' | 'down' | 'left' | 'right') => {
+    setRobotPosition(prev => {
+      let newX = prev.x;
+      let newY = prev.y;
+      
+      switch (direction) {
+        case 'up': newY = Math.max(0, prev.y - 1); break;
+        case 'down': newY = Math.min(4, prev.y + 1); break;
+        case 'left': newX = Math.max(0, prev.x - 1); break;
+        case 'right': newX = Math.min(4, prev.x + 1); break;
+      }
+      
+      return { x: newX, y: newY, direction };
+    });
+    
+    setKodyResponse(`Kody bergerak ke ${direction === 'up' ? 'atas' : direction === 'down' ? 'bawah' : direction === 'left' ? 'kiri' : 'kanan'}!`);
+    setKodyResponseClass("text-blue-600 font-semibold");
+  };
+
   const resetActivity = () => {
     setRobotPosition({ x: 2, y: 2, direction: 'up' });
     setCompletedTasks([]);
@@ -140,6 +183,94 @@ else:
         <h3 className="text-2xl font-bold text-gray-800 mb-2">🤖 Kontrol Robot Kody</h3>
         <p className="text-gray-600">Gabungkan semua yang telah dipelajari untuk mengontrol Kody sepenuhnya!</p>
       </div>
+
+      {/* Integrated Control Panel from Webtopia & Applandia */}
+      <Card className="hover-lift rainbow-border">
+        <CardHeader>
+          <CardTitle className="text-xl flex items-center animate-text-wave">
+            🎮 Panel Kontrol Terintegrasi
+          </CardTitle>
+          <p className="text-sm text-gray-600">Kombinasi kontrol dari Webtopia dan Applandia</p>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Webtopia Style Controls */}
+            <div className="bg-gradient-to-br from-orange-900 to-red-900 rounded-2xl p-4">
+              <h4 className="text-white font-semibold mb-3 text-center">Kontrol Web</h4>
+              <div className="grid grid-cols-2 gap-2">
+                <Button onClick={() => handleQuickAction("power")} className="interactive-btn bg-green-500 hover:bg-green-600 text-white py-2 text-sm">
+                  ⚡ Power
+                </Button>
+                <Button onClick={() => handleQuickAction("sound")} className="interactive-btn bg-purple-500 hover:bg-purple-600 text-white py-2 text-sm">
+                  🎵 Sound
+                </Button>
+              </div>
+              <div className="mt-3 space-y-2">
+                <div className="flex items-center justify-between text-xs text-gray-300">
+                  <span>CPU:</span>
+                  <div className="w-16 bg-gray-700 rounded-full h-1">
+                    <div className="bg-blue-400 h-1 rounded-full animate-progress" style={{width: '75%'}}></div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between text-xs text-gray-300">
+                  <span>Power:</span>
+                  <div className="w-16 bg-gray-700 rounded-full h-1">
+                    <div className="bg-green-400 h-1 rounded-full animate-progress" style={{width: '90%'}}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Applandia Style UI Controls */}
+            <div className="bg-gradient-to-br from-purple-900 to-indigo-900 rounded-2xl p-4">
+              <h4 className="text-white font-semibold mb-3 text-center">Kontrol UI</h4>
+              <div className="grid grid-cols-2 gap-2">
+                <Button onClick={() => handleDirectionMove('up')} className="interactive-btn bg-blue-500 hover:bg-blue-600 text-white py-2 text-sm">
+                  ↑
+                </Button>
+                <Button onClick={() => handleDirectionMove('down')} className="interactive-btn bg-blue-500 hover:bg-blue-600 text-white py-2 text-sm">
+                  ↓
+                </Button>
+                <Button onClick={() => handleDirectionMove('left')} className="interactive-btn bg-blue-500 hover:bg-blue-600 text-white py-2 text-sm">
+                  ←
+                </Button>
+                <Button onClick={() => handleDirectionMove('right')} className="interactive-btn bg-blue-500 hover:bg-blue-600 text-white py-2 text-sm">
+                  →
+                </Button>
+              </div>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <Button onClick={() => handleQuickAction("smile")} className="interactive-btn bg-yellow-500 hover:bg-yellow-600 text-white py-1 text-xs">
+                  😊
+                </Button>
+                <Button onClick={() => handleQuickAction("spin")} className="interactive-btn bg-red-500 hover:bg-red-600 text-white py-1 text-xs">
+                  🔄
+                </Button>
+              </div>
+            </div>
+
+            {/* Status & Response Panel */}
+            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-4">
+              <h4 className="text-white font-semibold mb-3 text-center">Status Robot</h4>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-green-400 text-sm">Online</span>
+                </div>
+                <div className="text-white text-xs bg-gray-700 rounded p-2 animate-fade-in-out">
+                  {kodyResponse}
+                </div>
+                <div className="grid grid-cols-3 gap-1 mt-3">
+                  {['🔵', '🟢', '🟡'].map((color, i) => (
+                    <div key={i} className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center text-lg animate-heartbeat" style={{animationDelay: `${i * 0.2}s`}}>
+                      {color}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Code Editor */}
