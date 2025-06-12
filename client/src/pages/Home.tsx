@@ -142,7 +142,7 @@ export default function Home() {
             <ProgressBar 
               percentage={progressPercentage} 
               currentLevel={gameState.currentLevel} 
-              totalLevels={5}
+              totalLevels={7}
             />
           </div>
         </div>
